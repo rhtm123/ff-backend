@@ -7,6 +7,19 @@ app.use(bodyParser.json());
 
 const builderRoutes = require('./routes/builderRoutes');
 const societyRoutes = require('./routes/societyRoutes');
+const memberRoutes = require('./routes/memberRoutes');
+const wingRoutes = require('./routes/wingRoutes');
+const flatRoutes = require('./routes/flatRoutes');
+const ownerRoutes = require('./routes/ownerRoutes');
+const tenantRoutes = require('./routes/tenantRoutes');
+const ownerFamilyRoutes = require('./routes/ownerFamilyRoutes');
+const tenantFamilyRoutes = require('./routes/tenantFamilyRoutes');
+
+
+
+
+
+
 
 
 
@@ -16,7 +29,21 @@ const connectDB = require('./db');
 connectDB();
 
 app.use('/api/builders', builderRoutes);
+app.use('/api/members', memberRoutes);
 app.use('/api/societies', societyRoutes);
+app.use('/api/wings', wingRoutes);
+app.use('/api/flats', flatRoutes);
+app.use('/api/owners', ownerRoutes);
+app.use('/api/tenants', tenantRoutes);
+app.use('/api/ownerFamilys', ownerFamilyRoutes);
+app.use('/api/tenantFamilys', tenantFamilyRoutes);
+
+
+
+
+
+
+
 
 
 
