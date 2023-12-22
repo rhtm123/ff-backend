@@ -1,6 +1,6 @@
 const Builder = require('../models/builderModel');
-const constants = require('../config/constants');
 
+const defaultPageSize = 10
 // Create
 const createBuilder = async (req, res) => {
   try {
@@ -16,7 +16,7 @@ const createBuilder = async (req, res) => {
 const getBuilders = async (req, res) => {
     try {
       const page = parseInt(req.query.page) || 1;
-      const pageSize = parseInt(req.query.pageSize) || constants.defaultPageSize;
+      const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
   
       const totalCount = await Builder.countDocuments();
       const totalPages = Math.ceil(totalCount / pageSize);
