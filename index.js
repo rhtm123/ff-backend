@@ -35,8 +35,8 @@ app.use('/api/wings', wingRoutes);
 app.use('/api/flats', flatRoutes);
 app.use('/api/owners', ownerRoutes);
 app.use('/api/tenants', tenantRoutes);
-app.use('/api/ownerFamilys', ownerFamilyRoutes);
-app.use('/api/tenantFamilys', tenantFamilyRoutes);
+app.use('/api/ownerFamilies', ownerFamilyRoutes);
+app.use('/api/tenantFamiles', tenantFamilyRoutes);
 
 
 
