@@ -1,6 +1,7 @@
 const Flat = require('../models/flatModel');
 
-// CRUD operations for flats
+const defaultPageSize = 10;
+
 const createFlat = async (req, res) => {
   try {
     const flat = new Flat(req.body);
@@ -13,8 +14,23 @@ const createFlat = async (req, res) => {
 
 const getFlats = async (req, res) => {
   try {
-    const flats = await Flat.find();
-    res.json(flats);
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
+
+    const totalCount = await Flat.countDocuments();
+    const totalPages = Math.ceil(totalCount / pageSize);
+
+    const flats = await Flat.find()
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    res.json({
+      flats,
+      page,
+      pageSize,
+      totalCount,
+      totalPages,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

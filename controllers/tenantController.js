@@ -1,6 +1,10 @@
 const Tenant = require('../models/tenantModel');
 
-// CRUD operations for tenants
+const defaultPageSize = 10;
+
+/**
+ * Create a new tenant.
+ */
 const createTenant = async (req, res) => {
   try {
     const tenant = new Tenant(req.body);
@@ -11,15 +15,37 @@ const createTenant = async (req, res) => {
   }
 };
 
+/**
+ * Get paginated list of tenants.
+ * Query parameters: page, pageSize
+ */
 const getTenants = async (req, res) => {
   try {
-    const tenants = await Tenant.find();
-    res.json(tenants);
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
+
+    const totalCount = await Tenant.countDocuments();
+    const totalPages = Math.ceil(totalCount / pageSize);
+
+    const tenants = await Tenant.find()
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    res.json({
+      tenants,
+      page,
+      pageSize,
+      totalCount,
+      totalPages,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
+/**
+ * Get a tenant by ID.
+ */
 const getTenantById = async (req, res) => {
   try {
     const tenant = await Tenant.findById(req.params.id);
@@ -32,6 +58,9 @@ const getTenantById = async (req, res) => {
   }
 };
 
+/**
+ * Update a tenant by ID.
+ */
 const updateTenant = async (req, res) => {
   try {
     const tenant = await Tenant.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -41,6 +70,9 @@ const updateTenant = async (req, res) => {
   }
 };
 
+/**
+ * Delete a tenant by ID.
+ */
 const deleteTenant = async (req, res) => {
   try {
     const tenant = await Tenant.findByIdAndDelete(req.params.id);

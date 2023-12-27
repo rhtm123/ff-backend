@@ -1,6 +1,10 @@
 const TenantFamily = require('../models/tenantFamilyModel');
 
-// CRUD operations for tenant families
+const defaultPageSize = 10;
+
+/**
+ * Create a new tenant family.
+ */
 const createTenantFamily = async (req, res) => {
   try {
     const tenantFamily = new TenantFamily(req.body);
@@ -11,15 +15,37 @@ const createTenantFamily = async (req, res) => {
   }
 };
 
+/**
+ * Get paginated list of tenant families.
+ * Query parameters: page, pageSize
+ */
 const getTenantFamilies = async (req, res) => {
   try {
-    const tenantFamilies = await TenantFamily.find();
-    res.json(tenantFamilies);
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
+
+    const totalCount = await TenantFamily.countDocuments();
+    const totalPages = Math.ceil(totalCount / pageSize);
+
+    const tenantFamilies = await TenantFamily.find()
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    res.json({
+      tenantFamilies,
+      page,
+      pageSize,
+      totalCount,
+      totalPages,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
+/**
+ * Get a tenant family by ID.
+ */
 const getTenantFamilyById = async (req, res) => {
   try {
     const tenantFamily = await TenantFamily.findById(req.params.id);
@@ -32,6 +58,9 @@ const getTenantFamilyById = async (req, res) => {
   }
 };
 
+/**
+ * Update a tenant family by ID.
+ */
 const updateTenantFamily = async (req, res) => {
   try {
     const tenantFamily = await TenantFamily.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -41,6 +70,9 @@ const updateTenantFamily = async (req, res) => {
   }
 };
 
+/**
+ * Delete a tenant family by ID.
+ */
 const deleteTenantFamily = async (req, res) => {
   try {
     const tenantFamily = await TenantFamily.findByIdAndDelete(req.params.id);
