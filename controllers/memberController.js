@@ -2,6 +2,15 @@ const Member = require('../models/memberModel');
 
 const defaultPageSize = 10;
 
+const jwt = require('jsonwebtoken');
+
+
+
+
+
+
+
+
 // Create
 const createMember = async (req, res) => {
   try {
@@ -73,10 +82,37 @@ const deleteMember = async (req, res) => {
   }
 };
 
+
+
+const loginMember = async (req, res) => {
+  // console.log("login request")
+
+  try {
+    const { username, password } = req.body;
+    // console.log(username, password);
+    const user = await Member.findOne({ username });
+
+    if (!user) return res.status(401).json({ message: 'Invalid username or password' });
+
+    const isPasswordValid = await user.comparePassword(password);
+
+    if (!isPasswordValid) return res.status(401).json({ message: 'Invalid username or password' });
+
+    const token = jwt.sign({ username: user.username, userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '30d', // Token expires in 1 hour
+    });
+
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+
+ }
 module.exports = {
   createMember,
   getMembers,
   updateMember,
   deleteMember,
-  getMemberById
+  getMemberById,
+  loginMember,
 };

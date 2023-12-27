@@ -1,9 +1,14 @@
 var express = require('express');
 var app = express();
 
+const authenticateToken = require('./middleware/authMiddleware');
+
+
+// this code is for accepting data in port request
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+// app.use(authenticateToken); // authentication 
 
 const builderRoutes = require('./routes/builderRoutes');
 const societyRoutes = require('./routes/societyRoutes');
@@ -23,11 +28,12 @@ const tenantFamilyRoutes = require('./routes/tenantFamilyRoutes');
 
 
 
-// other codes 
+// connecting to database
 const connectDB = require('./db');
 
 connectDB();
 
+// all the routes 
 app.use('/api/builders', builderRoutes);
 app.use('/api/members', memberRoutes);
 app.use('/api/societies', societyRoutes);

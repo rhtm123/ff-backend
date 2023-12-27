@@ -4,6 +4,7 @@ const memberController = require('../controllers/memberController');
 
 // CRUD operations for members
 router.post('/', memberController.createMember);
+router.post('/login', memberController.loginMember);
 router.get('/', memberController.getMembers);
 router.get('/:id', memberController.getMemberById);
 router.put('/:id', memberController.updateMember);

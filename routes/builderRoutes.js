@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const builderController = require('../controllers/builderController');
 
+// router.use(authenticateToken);
+
 // CRUD operations
 router.post('/', builderController.createBuilder);
 router.get('/', builderController.getBuilders);
