@@ -1,6 +1,10 @@
 const Wing = require('../models/wingModel');
 
-// CRUD operations for wings
+const defaultPageSize = 10;
+
+/**
+ * Create a new wing.
+ */
 const createWing = async (req, res) => {
   try {
     const wing = new Wing(req.body);
@@ -11,15 +15,37 @@ const createWing = async (req, res) => {
   }
 };
 
+/**
+ * Get paginated list of wings.
+ * Query parameters: page, pageSize
+ */
 const getWings = async (req, res) => {
   try {
-    const wings = await Wing.find();
-    res.json(wings);
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
+
+    const totalCount = await Wing.countDocuments();
+    const totalPages = Math.ceil(totalCount / pageSize);
+
+    const wings = await Wing.find()
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    res.json({
+      wings,
+      page,
+      pageSize,
+      totalCount,
+      totalPages,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
+/**
+ * Get a wing by ID.
+ */
 const getWingById = async (req, res) => {
   try {
     const wing = await Wing.findById(req.params.id);
@@ -32,6 +58,9 @@ const getWingById = async (req, res) => {
   }
 };
 
+/**
+ * Update a wing by ID.
+ */
 const updateWing = async (req, res) => {
   try {
     const wing = await Wing.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -41,6 +70,9 @@ const updateWing = async (req, res) => {
   }
 };
 
+/**
+ * Delete a wing by ID.
+ */
 const deleteWing = async (req, res) => {
   try {
     const wing = await Wing.findByIdAndDelete(req.params.id);

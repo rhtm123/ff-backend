@@ -1,6 +1,7 @@
 const Owner = require('../models/ownerModel');
 
-// CRUD operations for owners
+const defaultPageSize = 10;
+
 const createOwner = async (req, res) => {
   try {
     const owner = new Owner(req.body);
@@ -13,8 +14,23 @@ const createOwner = async (req, res) => {
 
 const getOwners = async (req, res) => {
   try {
-    const owners = await Owner.find();
-    res.json(owners);
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
+
+    const totalCount = await Owner.countDocuments();
+    const totalPages = Math.ceil(totalCount / pageSize);
+
+    const owners = await Owner.find()
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    res.json({
+      owners,
+      page,
+      pageSize,
+      totalCount,
+      totalPages,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
