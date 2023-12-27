@@ -8,7 +8,7 @@ const authenticateToken = require('./middleware/authMiddleware');
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// app.use(authenticateToken); // authentication 
+app.use(authenticateToken); // authentication 
 
 const builderRoutes = require('./routes/builderRoutes');
 const societyRoutes = require('./routes/societyRoutes');
