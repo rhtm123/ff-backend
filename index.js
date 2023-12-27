@@ -1,7 +1,11 @@
 var express = require('express');
+const cors = require('cors'); // Import the cors middleware
+
 var app = express();
 
 const authenticateToken = require('./middleware/authMiddleware');
+
+app.use(cors());
 
 
 // this code is for accepting data in port request
