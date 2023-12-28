@@ -90,19 +90,21 @@ const loginMember = async (req, res) => {
   try {
     const { username, password } = req.body;
     // console.log(username, password);
-    const user = await Member.findOne({ username });
+    const member = await Member.findOne({ username });
 
-    if (!user) return res.status(401).json({ message: 'Invalid username or password' });
+    // console.log(member);
 
-    const isPasswordValid = await user.comparePassword(password);
+    if (!member) return res.status(401).json({ message: 'Invalid username or password' });
+
+    const isPasswordValid = await member.comparePassword(password);
 
     if (!isPasswordValid) return res.status(401).json({ message: 'Invalid username or password' });
 
-    const token = jwt.sign({ username: user.username, userId: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ username: member.username, userId: member._id }, process.env.JWT_SECRET, {
       expiresIn: '30d', // Token expires in 1 hour
     });
 
-    res.json({ token });
+    res.json({ token, member });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
