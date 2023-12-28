@@ -46,7 +46,7 @@ app.use('/api/flats', flatRoutes);
 app.use('/api/owners', ownerRoutes);
 app.use('/api/tenants', tenantRoutes);
 app.use('/api/ownerFamilies', ownerFamilyRoutes);
-app.use('/api/tenantFamiles', tenantFamilyRoutes);
+app.use('/api/tenantFamilies', tenantFamilyRoutes);
 
 
 
