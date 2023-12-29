@@ -17,17 +17,24 @@ const createWing = async (req, res) => {
 
 /**
  * Get paginated list of wings.
- * Query parameters: page, pageSize
+ * Query parameters: page, pageSize, societyId
  */
 const getWings = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
 
-    const totalCount = await Wing.countDocuments();
+    let query = {}; // Initialize an empty query object
+
+    // Check if societyId is provided in the query parameters
+    if (req.query.societyId) {
+      query.societyId = req.query.societyId;
+    }
+
+    const totalCount = await Wing.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const wings = await Wing.find()
+    const wings = await Wing.find(query)
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 

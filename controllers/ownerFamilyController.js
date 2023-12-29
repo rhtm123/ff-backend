@@ -12,10 +12,27 @@ const createOwnerFamily = async (req, res) => {
   }
 };
 
+/**
+ * Get paginated list of owner families.
+ * Query parameters: page, pageSize, ownerId, memberId
+ */
+
 const getOwnerFamilies = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
+
+
+    let query = {}; // Initialize an empty query object
+
+    // Check if builderId is provided in the query parameters
+    if (req.query.ownerId) {
+      query.ownerId = req.query.ownerId;
+    }
+
+    if (req.query.memberId) {
+      query.memberId = req.query.memberId;
+    }
 
     const totalCount = await OwnerFamily.countDocuments();
     const totalPages = Math.ceil(totalCount / pageSize);

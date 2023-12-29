@@ -16,15 +16,26 @@ const createSociety = async (req, res) => {
 };
 
 // Read all societies with pagination
+/**
+ * Get paginated list of wings.
+ * Query parameters: page, pageSize, builderId
+ */
 const getSocieties = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
 
-    const totalCount = await Society.countDocuments();
+    let query = {}; // Initialize an empty query object
+
+    // Check if builderId is provided in the query parameters
+    if (req.query.builderId) {
+      query.builderId = req.query.builderId;
+    }
+
+    const totalCount = await Society.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const societies = await Society.find()
+    const societies = await Society.find(query)
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 

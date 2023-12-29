@@ -1,4 +1,5 @@
 const Flat = require('../models/flatModel');
+const Wing = require('../models/wingModel');
 
 const defaultPageSize = 10;
 
@@ -12,15 +13,45 @@ const createFlat = async (req, res) => {
   }
 };
 
+/**
+ * Get paginated list of flats.
+ * Query parameters: page, pageSize, societyId, search
+ */
+
 const getFlats = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
 
-    const totalCount = await Flat.countDocuments();
+
+    let query = {}; // Initialize an empty query object
+
+    // Check if societyId is provided in the query parameters
+    if (req.query.societyId) {
+      const wings = await Wing.find({ societyId: req.query.societyId });
+
+      // Extract wingIds from the wings
+      const wingIds = wings.map((wing) => wing._id);
+
+      // Add wingId filter to the query
+      query.wingId = { $in: wingIds };
+    }
+
+    // Check if wingId is provided in the query parameters
+    if (req.query.wingId) {
+      query.wingId = req.query.wingId;
+    }
+
+    // Check if there's a search query
+    if (req.query.search) {
+      // Add a case-insensitive search for the flat name
+      query.name = { $regex: new RegExp(req.query.search, 'i') };
+    }
+
+    const totalCount = await Flat.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const flats = await Flat.find()
+    const flats = await Flat.find(query)
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 

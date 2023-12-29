@@ -12,15 +12,33 @@ const createOwner = async (req, res) => {
   }
 };
 
+// Read all owners with pagination
+/**
+ * Get paginated list of owners.
+ * Query parameters: page, pageSize, flatId, memberId
+ */
 const getOwners = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
 
-    const totalCount = await Owner.countDocuments();
+
+
+    let query = {}; // Initialize an empty query object
+
+    // Check if builderId is provided in the query parameters
+    if (req.query.flatId) {
+      query.flatId = req.query.flatId;
+    }
+
+    if (req.query.memberId) {
+      query.memberId = req.query.memberId;
+    }
+
+    const totalCount = await Owner.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const owners = await Owner.find()
+    const owners = await Owner.find(query)
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 

@@ -24,10 +24,23 @@ const getTenantFamilies = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
 
-    const totalCount = await TenantFamily.countDocuments();
+    // Check if builderId is provided in the query parameters
+    let query = {}; // Initialize an empty query object
+
+
+    if (req.query.ownerId) {
+      query.ownerId = req.query.ownerId;
+    }
+
+    if (req.query.memberId) {
+      query.memberId = req.query.memberId;
+    }
+    
+
+    const totalCount = await TenantFamily.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const tenantFamilies = await TenantFamily.find()
+    const tenantFamilies = await TenantFamily.find(query)
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 

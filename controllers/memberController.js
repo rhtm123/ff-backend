@@ -23,15 +23,35 @@ const createMember = async (req, res) => {
 };
 
 // Read all members with pagination
+/**
+ * Get paginated list of members.
+ * Query parameters: page, pageSize, societyId, search
+ */
 const getMembers = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
 
-    const totalCount = await Member.countDocuments();
+
+
+    let query = {}; // Initialize an empty query object
+
+    // Check if societyId is provided in the query parameters
+    if (req.query.societyId) {
+      query.societyId = req.query.societyId;
+    }
+
+        // Check if there's a search query
+    if (req.query.search) {
+      // Add a case-insensitive search for the flat name
+      query.name = { $regex: new RegExp(req.query.search, 'i') };
+    }
+    
+
+    const totalCount = await Member.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const members = await Member.find()
+    const members = await Member.find(query)
       .skip((page - 1) * pageSize)
       .limit(pageSize)
     //   .populate('societyId'); // Add this line to populate the society data

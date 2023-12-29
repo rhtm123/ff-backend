@@ -17,17 +17,30 @@ const createTenant = async (req, res) => {
 
 /**
  * Get paginated list of tenants.
- * Query parameters: page, pageSize
+ * Query parameters: page, pageSize, flatId, memebrId
  */
 const getTenants = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
 
-    const totalCount = await Tenant.countDocuments();
+    // Check if builderId is provided in the query parameters
+    let query = {}; // Initialize an empty query object
+
+
+    if (req.query.flatId) {
+      query.flatId = req.query.flatId;
+    }
+
+    if (req.query.memberId) {
+      query.memberId = req.query.memberId;
+    }
+
+
+    const totalCount = await Tenant.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const tenants = await Tenant.find()
+    const tenants = await Tenant.find(query)
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
