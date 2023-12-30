@@ -3,6 +3,13 @@ const mongoose = require('mongoose');
 const ownerSchema = new mongoose.Schema({
   flatId: { type: mongoose.Schema.Types.ObjectId, ref: 'Flat', required: true },
   memberId: { type: mongoose.Schema.Types.ObjectId, ref: 'Member', required: true },
+
+  ownerType: {
+    type: String,
+    enum: ['owner', 'co-owner'],
+    default: 'owner'
+  },
+  
   possessionDate: { type: Date },
   isLiving: { type: Boolean },
   sellDate: { type: Date },

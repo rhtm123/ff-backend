@@ -1,7 +1,12 @@
 var express = require('express');
+// import express from 'express';
 const cors = require('cors'); // Import the cors middleware
 
 var app = express();
+// const admin = require('./admin.mjs');
+// const adminRouter = require('./admin.mjs');
+
+
 
 const authenticateToken = require('./middleware/authMiddleware');
 
@@ -60,6 +65,11 @@ app.use('/api/tenantFamilies', tenantFamilyRoutes);
 app.get('/', function(req, res){
    res.send("Hello world!");
 });
+
+
+
+// app.use(admin.options.rootPath, adminRouter)
+
 
 const PORT = 3000;
 

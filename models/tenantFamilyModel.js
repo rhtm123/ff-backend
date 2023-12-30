@@ -4,6 +4,8 @@ const tenantFamilySchema = new mongoose.Schema({
   flatTenantId: { type: mongoose.Schema.Types.ObjectId, ref: 'Tenant', required: true },
   memberId: { type: mongoose.Schema.Types.ObjectId, ref: 'Member', required: true },
 
+  relation: {type: String},
+
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now },
 });
