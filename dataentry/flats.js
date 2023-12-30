@@ -23,29 +23,29 @@ connectDB();
 // Sample data to populate the database
 const flatsData = [
     {
-      wingId: "658fcf251b2822a6a11e82a3", // Replace with your actual wingId
+      wingId: "65901ef09c41d7b58c9e9505", // Replace with your actual wingId
       name: "101",
     },
     {
-      wingId: "658fcf251b2822a6a11e82a3", // Replace with your actual wingId
+      wingId: "65901ef09c41d7b58c9e9505", // Replace with your actual wingId
       name: "102",
     },
     {
-      wingId: "658fcf251b2822a6a11e82a3", // Replace with your actual wingId
+      wingId: "65901ef09c41d7b58c9e9505", // Replace with your actual wingId
       name: "103",
     },
     {
-        wingId: "658fcf251b2822a6a11e82a3", // Replace with your actual wingId
+        wingId: "65901ef09c41d7b58c9e9505", // Replace with your actual wingId
         name: "104",
       },
     
       {
-        wingId: "658fcf251b2822a6a11e82a3", // Replace with your actual wingId
+        wingId: "65901ef09c41d7b58c9e9505", // Replace with your actual wingId
         name: "105",
       },
 
       {
-        wingId: "658fcf251b2822a6a11e82a3", // Replace with your actual wingId
+        wingId: "65901ef09c41d7b58c9e9505", // Replace with your actual wingId
         name: "106",
       },
 
