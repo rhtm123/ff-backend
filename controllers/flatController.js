@@ -51,7 +51,7 @@ const getFlats = async (req, res) => {
     const totalCount = await Flat.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const flats = await Flat.find(query)
+    const flats = await Flat.find(query).populate('wingId')
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
