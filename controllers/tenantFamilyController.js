@@ -40,7 +40,7 @@ const getTenantFamilies = async (req, res) => {
     const totalCount = await TenantFamily.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const tenantFamilies = await TenantFamily.find(query)
+    const tenantFamilies = await TenantFamily.find(query).populate("tenantId")
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 

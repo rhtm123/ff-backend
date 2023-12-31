@@ -38,7 +38,7 @@ const getOwners = async (req, res) => {
     const totalCount = await Owner.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const owners = await Owner.find(query)
+    const owners = await Owner.find(query).populate(["flatId","memberId"])
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 

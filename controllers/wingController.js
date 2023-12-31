@@ -34,7 +34,7 @@ const getWings = async (req, res) => {
     const totalCount = await Wing.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const wings = await Wing.find(query)
+    const wings = await Wing.find(query).populate("societyId")
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
