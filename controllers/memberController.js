@@ -25,7 +25,8 @@ const createMember = async (req, res) => {
 // Read all members with pagination
 /**
  * Get paginated list of members.
- * Query parameters: page, pageSize, societyId, search
+ * Query parameters: page, pageSize, societyId, search,
+ * canAccess 
  */
 const getMembers = async (req, res) => {
   try {
@@ -39,6 +40,10 @@ const getMembers = async (req, res) => {
     // Check if societyId is provided in the query parameters
     if (req.query.societyId) {
       query.societyId = req.query.societyId;
+    }
+
+    if (req.query.canAccess) {
+      query.canAccess = req.query.canAccess;
     }
 
         // Check if there's a search query
