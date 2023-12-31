@@ -4,7 +4,7 @@ const ownerSchema = new mongoose.Schema({
   flatId: { type: mongoose.Schema.Types.ObjectId, ref: 'Flat', required: true },
   memberId: { type: mongoose.Schema.Types.ObjectId, ref: 'Member', required: true },
 
-  ownerType: {
+  ownershipType: {
     type: String,
     enum: ['owner', 'co-owner'],
     default: 'owner'
@@ -12,7 +12,8 @@ const ownerSchema = new mongoose.Schema({
   
   possessionDate: { type: Date },
   isLiving: { type: Boolean },
-  sellDate: { type: Date },
+  
+  saleDate: { type: Date },
 
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now },

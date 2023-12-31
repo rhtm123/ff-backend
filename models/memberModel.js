@@ -5,15 +5,17 @@ const bcrypt = require('bcrypt');
 
 const memberSchema = new mongoose.Schema({
   username: { type: String, unique: true, maxlength: 255 },
-  email: { type: String },
+  email: { type: String, unique: true, lowercase: true, trim: true, match: /\S+@\S+\.\S+/ },
   name: { type: String, required: true, },
   password: { type: String },
   isOwner: { type: Boolean, default: false },
   isTenant: { type: Boolean, default: false },
   canAccess: { type: Boolean, default: false },
   superAccess: { type: Boolean, default: false },
-  mobile: { type: String },
+  mobile: { type: String, trim: true }, // Normalize mobile number if needed
   dateOfBirth: { type: Date },
+  birthYear: { type: Number }, // Add the birthYear field
+
   gender: { type: String },  // <-- Added 'gender' field
   role: { type: String, required: true, default: "member" },
   profilePic: { type: String },  // <-- Added 'profilePic' field

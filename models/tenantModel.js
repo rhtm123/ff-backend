@@ -7,8 +7,8 @@ const tenantSchema = new mongoose.Schema({
   agreementMonth: {type: Number,},
   policeVerified: {type: Boolean, default: false},
 
-  startDate: { type: Date },
-  leaveDate: { type: Date },
+  moveInDate: { type: Date },
+  moveOutDate: { type: Date },
 
 
 
