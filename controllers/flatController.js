@@ -69,7 +69,7 @@ const getFlats = async (req, res) => {
 
 const getFlatById = async (req, res) => {
   try {
-    const flat = await Flat.findById(req.params.id);
+    const flat = await Flat.findById(req.params.id).populate("wingId");
     if (!flat) {
       return res.status(404).json({ message: 'Flat not found' });
     }
