@@ -6,6 +6,7 @@ const createOwner = async (req, res) => {
   try {
     const owner = new Owner(req.body);
     const savedOwner = await owner.save();
+    await savedOwner.populate('memberId').execPopulate();
     res.status(201).json(savedOwner);
   } catch (error) {
     res.status(400).json({ error: error.message });
