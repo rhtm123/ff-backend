@@ -9,6 +9,8 @@ const createTenant = async (req, res) => {
   try {
     const tenant = new Tenant(req.body);
     const savedTenant = await tenant.save();
+    await savedTenant.populate('memberId');
+
     res.status(201).json(savedTenant);
   } catch (error) {
     res.status(400).json({ error: error.message });

@@ -6,6 +6,7 @@ const createOwnerFamily = async (req, res) => {
   try {
     const ownerFamily = new OwnerFamily(req.body);
     const savedOwnerFamily = await ownerFamily.save();
+    
     res.status(201).json(savedOwnerFamily);
   } catch (error) {
     res.status(400).json({ error: error.message });
