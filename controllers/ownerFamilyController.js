@@ -6,6 +6,8 @@ const createOwnerFamily = async (req, res) => {
   try {
     const ownerFamily = new OwnerFamily(req.body);
     const savedOwnerFamily = await ownerFamily.save();
+    await savedOwnerFamily.populate('memberId');
+    await savedOwnerFamily.populate('ownerId');
     
     res.status(201).json(savedOwnerFamily);
   } catch (error) {
@@ -38,7 +40,7 @@ const getOwnerFamilies = async (req, res) => {
     const totalCount = await OwnerFamily.countDocuments();
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const ownerFamilies = await OwnerFamily.find().populate("ownerId")
+    const ownerFamilies = await OwnerFamily.find().populate(["ownerId", "memberId", ])
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
