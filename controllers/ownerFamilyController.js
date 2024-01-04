@@ -37,10 +37,10 @@ const getOwnerFamilies = async (req, res) => {
       query.memberId = req.query.memberId;
     }
 
-    const totalCount = await OwnerFamily.countDocuments();
+    const totalCount = await OwnerFamily.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const ownerFamilies = await OwnerFamily.find().populate(["ownerId", "memberId", ])
+    const ownerFamilies = await OwnerFamily.find(query).populate(["ownerId", "memberId", ])
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
