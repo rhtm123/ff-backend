@@ -6,7 +6,7 @@ const createOwner = async (req, res) => {
   try {
     const owner = new Owner(req.body);
     const savedOwner = await owner.save();
-    await savedOwner.populate('memberId');
+    await savedOwner.populate(["flatId","memberId"]);
     res.status(201).json(savedOwner);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -58,6 +58,8 @@ const getOwners = async (req, res) => {
 const getOwnerById = async (req, res) => {
   try {
     const owner = await Owner.findById(req.params.id);
+    await owner.populate(["flatId","memberId"]);
+
     if (!owner) {
       return res.status(404).json({ message: 'Owner not found' });
     }
@@ -70,6 +72,7 @@ const getOwnerById = async (req, res) => {
 const updateOwner = async (req, res) => {
   try {
     const owner = await Owner.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    await owner.populate(["flatId","memberId"]);
     res.json(owner);
   } catch (error) {
     res.status(400).json({ error: error.message });

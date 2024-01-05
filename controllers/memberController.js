@@ -15,6 +15,9 @@ const jwt = require('jsonwebtoken');
 const createMember = async (req, res) => {
   try {
     const member = new Member(req.body);
+    if (!member.username){ 
+      member.username = member._id;
+    }
     const savedMember = await member.save();
     res.status(201).json(savedMember);
   } catch (error) {
