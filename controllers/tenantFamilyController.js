@@ -9,6 +9,9 @@ const createTenantFamily = async (req, res) => {
   try {
     const tenantFamily = new TenantFamily(req.body);
     const savedTenantFamily = await tenantFamily.save();
+
+    await savedTenantFamily.populate(["tenantId", "memberId", ]);
+
     res.status(201).json(savedTenantFamily);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -40,7 +43,7 @@ const getTenantFamilies = async (req, res) => {
     const totalCount = await TenantFamily.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const tenantFamilies = await TenantFamily.find(query).populate("tenantId")
+    const tenantFamilies = await TenantFamily.find(query).populate(["tenantId", "memberId", ])
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
@@ -62,6 +65,8 @@ const getTenantFamilies = async (req, res) => {
 const getTenantFamilyById = async (req, res) => {
   try {
     const tenantFamily = await TenantFamily.findById(req.params.id);
+    await tenantFamily.populate(["tenantId", "memberId",]);
+
     if (!tenantFamily) {
       return res.status(404).json({ message: 'TenantFamily not found' });
     }
@@ -77,6 +82,8 @@ const getTenantFamilyById = async (req, res) => {
 const updateTenantFamily = async (req, res) => {
   try {
     const tenantFamily = await TenantFamily.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    await tenantFamily.populate(["tenantId", "memberId",]);
+
     res.json(tenantFamily);
   } catch (error) {
     res.status(400).json({ error: error.message });
