@@ -7,6 +7,8 @@ var app = express();
 // const adminRouter = require('./admin.mjs');
 
 
+// Import the cron job module
+require('./cronJob');
 
 const authenticateToken = require('./middleware/authMiddleware');
 
