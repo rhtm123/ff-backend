@@ -28,6 +28,8 @@ const ownerRoutes = require('./routes/ownerRoutes');
 const tenantRoutes = require('./routes/tenantRoutes');
 const ownerFamilyRoutes = require('./routes/ownerFamilyRoutes');
 const tenantFamilyRoutes = require('./routes/tenantFamilyRoutes');
+const penaltyRoutes = require('./routes/penaltyRoutes');
+const ownerPenaltyRoutes = require('./routes/ownerPenaltyRoutes');
 
 
 
@@ -52,6 +54,8 @@ app.use('/api/owners', ownerRoutes);
 app.use('/api/tenants', tenantRoutes);
 app.use('/api/ownerFamilies', ownerFamilyRoutes);
 app.use('/api/tenantFamilies', tenantFamilyRoutes);
+app.use('/api/penalties', penaltyRoutes);
+app.use('/api/ownerPenalties', ownerPenaltyRoutes);
 
 
 
