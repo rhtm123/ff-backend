@@ -9,7 +9,7 @@ const createTenant = async (req, res) => {
   try {
     const tenant = new Tenant(req.body);
     const savedTenant = await tenant.save();
-    await savedTenant.populate('memberId');
+    await savedTenant.populate(["flatId","memberId"]);
 
     res.status(201).json(savedTenant);
   } catch (error) {
@@ -67,6 +67,8 @@ const getTenantById = async (req, res) => {
     if (!tenant) {
       return res.status(404).json({ message: 'Tenant not found' });
     }
+    await tenant.populate(['memberId', 'flatId']);
+
     res.json(tenant);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -79,6 +81,8 @@ const getTenantById = async (req, res) => {
 const updateTenant = async (req, res) => {
   try {
     const tenant = await Tenant.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    await tenant.populate(['memberId', 'flatId']);
+
     res.json(tenant);
   } catch (error) {
     res.status(400).json({ error: error.message });
