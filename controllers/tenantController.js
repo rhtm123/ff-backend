@@ -1,4 +1,5 @@
 const Tenant = require('../models/tenantModel');
+const Owner = require('../models/ownerModel');
 
 const defaultPageSize = 10;
 
@@ -7,9 +8,17 @@ const defaultPageSize = 10;
  */
 const createTenant = async (req, res) => {
   try {
-    const tenant = new Tenant(req.body);
+
+    const lastOwner = await Owner.findOne({ flatId: req.body.flatId }, {}, { sort: { 'created': -1 } });
+
+    // Set ownerId to the last ownerId or null if not found
+    const ownerId = lastOwner ? lastOwner._id : null;
+
+    // Create a new Tenant with the ownerId set
+    const tenant = new Tenant({ ...req.body, ownerId });
+
     const savedTenant = await tenant.save();
-    await savedTenant.populate(["flatId","memberId"]);
+    await savedTenant.populate(["flatId","memberId","ownerId"]);
 
     res.status(201).json(savedTenant);
   } catch (error) {

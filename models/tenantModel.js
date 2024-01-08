@@ -4,6 +4,8 @@ const tenantSchema = new mongoose.Schema({
   flatId: { type: mongoose.Schema.Types.ObjectId, ref: 'Flat', required: true },
   memberId: { type: mongoose.Schema.Types.ObjectId, ref: 'Member', required: true },
 
+  ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Owner', required: false },
+
   agreementMonth: {type: Number,},
   policeVerified: {type: Boolean, default: false},
 
