@@ -31,8 +31,8 @@ const getTenantFamilies = async (req, res) => {
     let query = {}; // Initialize an empty query object
 
 
-    if (req.query.ownerId) {
-      query.ownerId = req.query.ownerId;
+    if (req.query.tenantId) {
+      query.tenantId = req.query.tenantId;
     }
 
     if (req.query.memberId) {
