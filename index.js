@@ -77,8 +77,8 @@ app.get('/', function(req, res){
 // app.use(admin.options.rootPath, adminRouter)
 
 
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-app.listen(PORT, ()=> {
-    console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(port, "0.0.0.0" ,()=> {
+    console.log(`Server is running on http://localhost:${port}`);
 });
