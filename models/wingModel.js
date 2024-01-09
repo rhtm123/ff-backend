@@ -8,6 +8,6 @@ const wingSchema = new mongoose.Schema({
   updated: { type: Date, default: Date.now },
 });
 
-const Wing = mongoose.model('Wing', wingSchema);
+const Wing = mongoose.model("Wing", wingSchema);
 
 module.exports = Wing;

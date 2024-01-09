@@ -10,6 +10,6 @@ const ownerFamilySchema = new mongoose.Schema({
   updated: { type: Date, default: Date.now },
 });
 
-const OwnerFamily = mongoose.model('OwnerFamily', ownerFamilySchema);
+const OwnerFamily = mongoose.model("OwnerFamily", ownerFamilySchema);
 
 module.exports = OwnerFamily;

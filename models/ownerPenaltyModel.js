@@ -8,6 +8,6 @@ const ownerPenaltySchema = new mongoose.Schema({
     updated: { type: Date, default: Date.now },
   });
   
-  const OwnerPenalty = mongoose.model('OwnerPenalty', ownerPenaltySchema);
+  const OwnerPenalty = mongoose.model("OwnerPenalty", ownerPenaltySchema);
   
   module.exports = OwnerPenalty;

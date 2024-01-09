@@ -13,6 +13,6 @@ const flatSchema = new mongoose.Schema({
   updated: { type: Date, default: Date.now },
 });
 
-const Flat = mongoose.model('Flat', flatSchema);
+const Flat = mongoose.model("Flat", flatSchema);
 
 module.exports = Flat;

@@ -19,6 +19,6 @@ const ownerSchema = new mongoose.Schema({
   updated: { type: Date, default: Date.now },
 });
 
-const Owner = mongoose.model('Owner', ownerSchema);
+const Owner = mongoose.model("Owner", ownerSchema);
 
 module.exports = Owner;

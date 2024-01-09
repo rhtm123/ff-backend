@@ -11,6 +11,7 @@ const builderSchema = new mongoose.Schema({
   updated: { type: Date, default: Date.now },
 });
 
-const Builder = mongoose.model('Builder', builderSchema);
+const Builder = mongoose.model("Builder", builderSchema);
+
 
 module.exports = Builder;

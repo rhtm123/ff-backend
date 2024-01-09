@@ -8,6 +8,6 @@ const penaltySchema = new mongoose.Schema({
     updated: { type: Date, default: Date.now },
   });
   
-  const Penalty = mongoose.model('Penalty', penaltySchema);
+  const Penalty = mongoose.model("Penalty", penaltySchema);
   
   module.exports = Penalty;

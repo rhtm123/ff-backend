@@ -11,6 +11,6 @@ const societySchema = new mongoose.Schema({
   updated: { type: Date, default: Date.now },
 });
 
-const Society = mongoose.model('Society', societySchema);
+const Society = mongoose.model("Society", societySchema);
 
 module.exports = Society;

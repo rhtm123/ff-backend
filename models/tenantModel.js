@@ -18,6 +18,6 @@ const tenantSchema = new mongoose.Schema({
   updated: { type: Date, default: Date.now },
 });
 
-const Tenant = mongoose.model('Tenant', tenantSchema);
+const Tenant = mongoose.model("Tenant", tenantSchema);
 
 module.exports = Tenant;
