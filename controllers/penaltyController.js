@@ -22,12 +22,12 @@ const getPenalties = async (req, res) => {
     const totalCount = await Penalty.countDocuments();
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const Penalties = await Penalty.find()
+    const penalties = await Penalty.find()
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
     res.json({
-      Penalties,
+      penalties,
       page,
       pageSize,
       totalCount,
