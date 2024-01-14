@@ -9,6 +9,7 @@ const complaintSchema = new mongoose.Schema({
   details: { type: String, required: true },
   isOwner: { type: Boolean, default: false },
   isTenant: { type: Boolean, default: false },
+  
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now },
 });

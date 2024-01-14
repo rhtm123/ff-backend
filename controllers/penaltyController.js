@@ -7,6 +7,8 @@ const createPenalty = async (req, res) => {
     try {
       const penalty = new Penalty(req.body);
       const savedPenalty = await penalty.save();
+      await savedPenalty.populate(["societyId"]);
+
       res.status(201).json(savedPenalty);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -18,11 +20,20 @@ const getPenalties = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
+    let query = {}; // Initialize an empty query object
 
-    const totalCount = await Penalty.countDocuments();
+
+    if (req.query.societyId) {
+      query.societyId = req.query.societyId;
+    }
+
+    const totalCount = await Penalty.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const penalties = await Penalty.find()
+
+
+
+    const penalties = await Penalty.find(query).populate(["societyId"])
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
@@ -42,6 +53,9 @@ const getPenalties = async (req, res) => {
 const getPenaltyById = async (req, res) => {
   try {
     const penalty = await Penalty.findById(req.params.id);
+    await penalty.populate(["societyId"]);
+
+
     if (!penalty) {
       return res.status(404).json({ message: 'Penalty not found' });
     }
@@ -55,6 +69,9 @@ const getPenaltyById = async (req, res) => {
 const updatePenalty = async (req, res) => {
 try {
   const penalty = await Penalty.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  await penalty.populate(["societyId"]);
+
+
   res.json(penalty);
 } catch (error) {
   res.status(400).json({ error: error.message });

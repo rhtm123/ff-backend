@@ -6,6 +6,8 @@ const createComplaint = async (req, res) => {
   try {
     const complaint = new Complaint(req.body);
     const savedComplaint = await complaint.save();
+    await savedComplaint.populate(['flatId','memberId'])
+
     res.status(201).json(savedComplaint);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -26,7 +28,7 @@ const getComplaints = async (req, res) => {
     const totalPages = Math.ceil(totalCount / pageSize);
 
     const complaints = await Complaint.find()
-      .populate('flatId memberId')
+      .populate(['flatId','memberId'])
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
@@ -45,7 +47,7 @@ const getComplaints = async (req, res) => {
 // Read a single complaint by ID
 const getComplaintById = async (req, res) => {
   try {
-    const complaint = await Complaint.findById(req.params.id).populate('flatId memberId');
+    const complaint = await Complaint.findById(req.params.id).populate(['flatId','memberId']);
     if (!complaint) {
       return res.status(404).json({ message: 'Complaint not found' });
     }
@@ -59,6 +61,7 @@ const getComplaintById = async (req, res) => {
 const updateComplaint = async (req, res) => {
   try {
     const complaint = await Complaint.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    await complaint.populate(['flatId','memberId'])
     res.json(complaint);
   } catch (error) {
     res.status(400).json({ error: error.message });

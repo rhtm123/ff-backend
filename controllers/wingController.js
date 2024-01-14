@@ -8,7 +8,7 @@ const defaultPageSize = 10;
 const createWing = async (req, res) => {
   try {
     const wing = new Wing(req.body);
-    const savedWing = await wing.save();
+    const savedWing = await wing.save().populate("societyId");
     res.status(201).json(savedWing);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -55,7 +55,7 @@ const getWings = async (req, res) => {
  */
 const getWingById = async (req, res) => {
   try {
-    const wing = await Wing.findById(req.params.id);
+    const wing = await Wing.findById(req.params.id).populate("societyId");
     if (!wing) {
       return res.status(404).json({ message: 'Wing not found' });
     }
@@ -70,7 +70,7 @@ const getWingById = async (req, res) => {
  */
 const updateWing = async (req, res) => {
   try {
-    const wing = await Wing.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const wing = await Wing.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate("societyId");
     res.json(wing);
   } catch (error) {
     res.status(400).json({ error: error.message });

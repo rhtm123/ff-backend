@@ -7,6 +7,7 @@ const createOwnerPenalty = async (req, res) => {
     try {
       const ownerPenalty = new OwnerPenalty(req.body);
       const savedOwnerPenalty = await ownerPenalty.save();
+      await savedOwnerPenalty.populate(["penaltyId","ownerId"])
       res.status(201).json(savedOwnerPenalty);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -19,10 +20,24 @@ const getOwnerPenalties = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
 
-    const totalCount = await OwnerPenalty.countDocuments();
+    // penaltyId, ownerId
+
+    let query = {}; // Initialize an empty query object
+
+    // Check if societyId is provided in the query parameters
+    if (req.query.penaltyId) {
+      query.penaltyId = req.query.penaltyId;
+    }
+
+    if (req.query.ownerId) {
+      query.ownerId = req.query.ownerId;
+    }
+    
+
+    const totalCount = await OwnerPenalty.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const OwnerPenalties = await OwnerPenalty.find().populate(["penaltyId","ownerId"])
+    const OwnerPenalties = await OwnerPenalty.find(query).populate(["penaltyId","ownerId"])
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
@@ -42,6 +57,8 @@ const getOwnerPenalties = async (req, res) => {
 const getOwnerPenaltyById = async (req, res) => {
   try {
     const ownerPenalty = await OwnerPenalty.findById(req.params.id);
+    await ownerPenalty.populate(["penaltyId","ownerId"])
+
     if (!ownerPenalty) {
       return res.status(404).json({ message: 'OwnerPenalty not found' });
     }
@@ -55,6 +72,8 @@ const getOwnerPenaltyById = async (req, res) => {
 const updateOwnerPenalty = async (req, res) => {
 try {
   const ownerPenalty = await OwnerPenalty.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  await ownerPenalty.populate(["penaltyId","ownerId"])
+
   res.json(ownerPenalty);
 } catch (error) {
   res.status(400).json({ error: error.message });

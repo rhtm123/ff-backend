@@ -7,6 +7,7 @@ const createFlat = async (req, res) => {
   try {
     const flat = new Flat(req.body);
     const savedFlat = await flat.save();
+    await savedFlat.populate("wingId");
     res.status(201).json(savedFlat);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -82,6 +83,7 @@ const getFlatById = async (req, res) => {
 const updateFlat = async (req, res) => {
   try {
     const flat = await Flat.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    await flat.populate("wingId");
     res.json(flat);
   } catch (error) {
     res.status(400).json({ error: error.message });

@@ -44,6 +44,10 @@ const getMembers = async (req, res) => {
       query.canAccess = req.query.canAccess;
     }
 
+    if (req.query.mobile) {
+      query.mobile = req.query.mobile;
+    }
+
         // Check if there's a search query
     if (req.query.search) {
       // Add a case-insensitive search for the flat name

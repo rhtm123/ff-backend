@@ -51,7 +51,7 @@ const getTenants = async (req, res) => {
     const totalCount = await Tenant.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const tenants = await Tenant.find(query).populate(["flatId","memberId"])
+    const tenants = await Tenant.find(query).populate(["flatId","memberId","ownerId"])
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
@@ -72,7 +72,7 @@ const getTenants = async (req, res) => {
  */
 const getTenantById = async (req, res) => {
   try {
-    const tenant = await Tenant.findById(req.params.id);
+    const tenant = await Tenant.findById(req.params.id).populate(["flatId","memberId","ownerId"]);
     if (!tenant) {
       return res.status(404).json({ message: 'Tenant not found' });
     }
@@ -89,7 +89,7 @@ const getTenantById = async (req, res) => {
  */
 const updateTenant = async (req, res) => {
   try {
-    const tenant = await Tenant.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const tenant = await Tenant.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate(["flatId","memberId","ownerId"]);
     await tenant.populate(['memberId', 'flatId']);
 
     res.json(tenant);
