@@ -6,11 +6,6 @@ const jwt = require('jsonwebtoken');
 
 
 
-
-
-
-
-
 // Create
 const createMember = async (req, res) => {
   try {

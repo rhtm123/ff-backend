@@ -17,8 +17,9 @@ const penaltyRoutes = require('./routes/penaltyRoutes');
 const ownerPenaltyRoutes = require('./routes/ownerPenaltyRoutes');
 
 
-const authenticateToken = require('./middleware/authMiddleware');
 
+const authenticateToken = require('./middleware/authMiddleware');
+const complaintRoutes = require('./routes/complaintRoutes');
 
 
 // Import the cron job module
@@ -67,6 +68,7 @@ app.use('/api/ownerFamilies', ownerFamilyRoutes);
 app.use('/api/tenantFamilies', tenantFamilyRoutes);
 app.use('/api/penalties', penaltyRoutes);
 app.use('/api/ownerPenalties', ownerPenaltyRoutes);
+app.use('/api/complaints', complaintRoutes);
 
 
 // admin routes
