@@ -20,6 +20,7 @@ const ownerPenaltyRoutes = require('./routes/ownerPenaltyRoutes');
 
 const authenticateToken = require('./middleware/authMiddleware');
 const complaintRoutes = require('./routes/complaintRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 
 // Import the cron job module
@@ -69,6 +70,7 @@ app.use('/api/tenantFamilies', tenantFamilyRoutes);
 app.use('/api/penalties', penaltyRoutes);
 app.use('/api/ownerPenalties', ownerPenaltyRoutes);
 app.use('/api/complaints', complaintRoutes);
+app.use('/api/contacts', contactRoutes);
 
 
 // admin routes
