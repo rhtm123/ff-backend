@@ -82,6 +82,9 @@ const updateOwner = async (req, res) => {
 const deleteOwner = async (req, res) => {
   try {
     const owner = await Owner.findByIdAndDelete(req.params.id);
+    if (owner) {
+      await owner.removeWithFamily();
+    }
     res.json({ message: 'Owner deleted successfully', owner });
   } catch (error) {
     res.status(400).json({ error: error.message });

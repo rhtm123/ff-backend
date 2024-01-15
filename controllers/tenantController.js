@@ -104,6 +104,9 @@ const updateTenant = async (req, res) => {
 const deleteTenant = async (req, res) => {
   try {
     const tenant = await Tenant.findByIdAndDelete(req.params.id);
+    if (tenant) {
+      await tenant.removeWithFamily();
+    }
     res.json({ message: 'Tenant deleted successfully', tenant });
   } catch (error) {
     res.status(400).json({ error: error.message });
