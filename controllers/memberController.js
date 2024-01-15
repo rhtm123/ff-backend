@@ -44,6 +44,11 @@ const getMembers = async (req, res) => {
       query.canAccess = req.query.canAccess;
     }
 
+    if (req.query.isCommitteeMember) {
+      query.isCommitteeMember = req.query.isCommitteeMember;
+    }
+
+
     if (req.query.mobile) {
       query.mobile = req.query.mobile;
     }
