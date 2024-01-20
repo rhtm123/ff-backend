@@ -44,6 +44,10 @@ const getTenants = async (req, res) => {
       memberQuery.name = { $regex: new RegExp(req.query.search, 'i') };
     }
 
+    if (req.query.societyId) {
+      memberQuery.societyId = req.query.societyId;
+    }
+
     // Find members with the given name query
     const members = await Member.find(memberQuery);
     const memberIds = members.map(member => member._id);
