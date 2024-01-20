@@ -32,6 +32,11 @@ const getOwners = async (req, res) => {
       memberQuery.name = { $regex: new RegExp(req.query.search, 'i') };
     }
 
+    if (req.query.role) {
+      // Add a regex search for the nested memberId.name field
+      memberQuery.role = req.query.role;
+    }
+
     if (req.query.isCommitteeMember) {
       // Add a regex search for the nested memberId.name field
       memberQuery.isCommitteeMember = req.query.isCommitteeMember;
