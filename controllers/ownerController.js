@@ -1,4 +1,5 @@
 const Owner = require('../models/ownerModel');
+const Member = require('../models/memberModel');
 
 const defaultPageSize = 10;
 
@@ -23,23 +24,38 @@ const getOwners = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
 
+    let memberQuery = {}; // Initialize an empty query object for members
+
+    // Check if search query is provided for member's name
+    if (req.query.search) {
+      // Add a regex search for the nested memberId.name field
+      memberQuery.name = { $regex: new RegExp(req.query.search, 'i') };
+    }
+
+    // Find members with the given name query
+    const members = await Member.find(memberQuery);
+    const memberIds = members.map(member => member._id);
 
 
-    let query = {}; // Initialize an empty query object
+    let ownerQuery = {}; // Initialize an empty query object for owners
 
-    // Check if builderId is provided in the query parameters
+    // Check if flatId is provided in the query parameters
     if (req.query.flatId) {
-      query.flatId = req.query.flatId;
+      ownerQuery.flatId = req.query.flatId;
     }
 
     if (req.query.memberId) {
-      query.memberId = req.query.memberId;
+      ownerQuery.memberId = req.query.memberId;
     }
 
-    const totalCount = await Owner.countDocuments(query);
+    if (memberIds.length > 0) {
+      ownerQuery.memberId = { $in: memberIds };
+    }
+
+    const totalCount = await Owner.countDocuments(ownerQuery);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const owners = await Owner.find(query).populate(["flatId","memberId"])
+    const owners = await Owner.find(ownerQuery).populate(["flatId", "memberId"])
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
@@ -54,6 +70,9 @@ const getOwners = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+
+
 
 const getOwnerById = async (req, res) => {
   try {
