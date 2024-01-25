@@ -5,7 +5,13 @@ const societySchema = new mongoose.Schema({
   name: { type: String, required: true },
   formationDate: { type: Date },
   registrationNumber: {type:String},
-  address: { type: String },
+  address: {
+    address1: { type: String },
+    address2: { type: String },
+    city: { type: String },
+    state: { type: String },
+    PIN: { type: String }
+  },
   rera: { type: String },
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now },
