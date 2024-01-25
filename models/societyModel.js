@@ -10,7 +10,7 @@ const societySchema = new mongoose.Schema({
     address2: { type: String },
     city: { type: String },
     state: { type: String },
-    PIN: { type: String }
+    pin: { type: String }
   },
   rera: { type: String },
   created: { type: Date, default: Date.now },
