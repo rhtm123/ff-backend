@@ -9,7 +9,13 @@ const complaintSchema = new mongoose.Schema({
   details: { type: String, required: true },
   isOwner: { type: Boolean, default: false },
   isTenant: { type: Boolean, default: false },
-  comments: { type: String},
+  comments: [
+    {
+      text: { type: String, required: true },
+      commenterId: { type: mongoose.Schema.Types.ObjectId, ref: "Member" },
+      created: { type: Date, default: Date.now }
+    }
+  ],
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now },
 });
