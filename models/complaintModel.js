@@ -2,13 +2,14 @@
 const mongoose = require("mongoose");
 
 const complaintSchema = new mongoose.Schema({
-  flatId: { type: mongoose.Schema.Types.ObjectId, ref: "Flat", required: false },
-  memberId: { type: mongoose.Schema.Types.ObjectId, ref: "Member", required: true },
+  ownerId: { type: mongoose.Schema.Types.ObjectId, ref: "Owner", required: true },
+  // flatId: { type: mongoose.Schema.Types.ObjectId, ref: "Flat", required: false },
+  // memberId: { type: mongoose.Schema.Types.ObjectId, ref: "Member", required: true },
   status: { type: String, enum: ['pending', 'in-progress', 'resolved'], default: 'pending' },
-  title: { type: String},
+  title: { type: String, required: true },
   details: { type: String, required: true },
-  isOwner: { type: Boolean, default: false },
-  isTenant: { type: Boolean, default: false },
+  // isOwner: { type: Boolean, default: false },
+  // isTenant: { type: Boolean, default: false },
   comments: [
     {
       text: { type: String, required: true },
