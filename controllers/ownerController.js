@@ -43,6 +43,7 @@ const getOwners = async (req, res) => {
     }
 
     if (req.query.mobile) {
+      // console.log(req.query.mobile);
       // Add a regex search for the nested memberId.name field
       memberQuery.mobile = req.query.mobile;
     }
@@ -50,9 +51,13 @@ const getOwners = async (req, res) => {
     if (req.query.societyId) {
       memberQuery.societyId = req.query.societyId;
     }
+
+    // console.log(memberQuery);
     // Find members with the given name query
     const members = await Member.find(memberQuery);
+    // console.log(members);
     const memberIds = members.map(member => member._id);
+    // console.log(memberIds);
 
 
     let ownerQuery = {}; // Initialize an empty query object for owners
@@ -63,12 +68,16 @@ const getOwners = async (req, res) => {
     }
 
     if (req.query.memberId) {
+      // console.log("memberID");
       ownerQuery.memberId = req.query.memberId;
     }
 
     if (memberIds.length > 0) {
+      // console.log(memberIds);
       ownerQuery.memberId = { $in: memberIds };
     }
+
+    // console.log(ownerQuery);
 
     const totalCount = await Owner.countDocuments(ownerQuery);
     const totalPages = Math.ceil(totalCount / pageSize);
