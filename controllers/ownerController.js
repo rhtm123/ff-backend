@@ -72,7 +72,7 @@ const getOwners = async (req, res) => {
       ownerQuery.memberId = req.query.memberId;
     }
 
-    console.log(memberQuery);
+    // console.log(memberQuery);
 
     if (memberQuery) {
       // console.log(memberIds);
