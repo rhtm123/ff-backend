@@ -37,7 +37,7 @@ const getOwnerPenalties = async (req, res) => {
     const totalCount = await OwnerPenalty.countDocuments(query);
     const totalPages = Math.ceil(totalCount / pageSize);
 
-    const OwnerPenalties = await OwnerPenalty.find(query).populate(["penaltyId","ownerId"])
+    const ownerPenalties = await OwnerPenalty.find(query).populate(["penaltyId","ownerId"])
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
