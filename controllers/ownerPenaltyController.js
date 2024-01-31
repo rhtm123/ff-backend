@@ -42,7 +42,7 @@ const getOwnerPenalties = async (req, res) => {
       .limit(pageSize);
 
     res.json({
-      OwnerPenalties,
+      ownerPenalties,
       page,
       pageSize,
       totalCount,
