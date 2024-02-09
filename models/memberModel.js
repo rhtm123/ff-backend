@@ -19,6 +19,7 @@ const memberSchema = new mongoose.Schema({
   gender: { type: String },  // <-- Added 'gender' field
   role: { type: String, required: true, default: "member" },
   profilePic: { type: String },  // <-- Added 'profilePic' field
+  profilePicPublicId: { type: String }, // <-- Added 'profilePicPublicId' field
  
 
 

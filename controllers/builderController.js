@@ -1,5 +1,8 @@
 const Builder = require('../models/builderModel');
 
+const sendEmail = require("../utils/sendEmail");
+
+
 const defaultPageSize = 10
 // Create
 const createBuilder = async (req, res) => {
@@ -15,6 +18,8 @@ const createBuilder = async (req, res) => {
 // Read all builders with pagination
 const getBuilders = async (req, res) => {
     try {
+      // let html = "<h1>Hello World</h1>"
+      // sendEmail(html);
       const page = parseInt(req.query.page) || 1;
       const pageSize = parseInt(req.query.pageSize) || defaultPageSize;
   

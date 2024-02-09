@@ -3,6 +3,7 @@ const Member = require('../models/memberModel');
 const defaultPageSize = 10;
 
 const jwt = require('jsonwebtoken');
+const cloudinary = require('cloudinary').v2;
 
 
 
@@ -140,8 +141,41 @@ const loginMember = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-
  }
+
+const uploadImage = async (req, res) => {
+  // Upload the file to Cloudinary
+  const member = await Member.findById(req.params.id);
+
+  if (!member) {
+    return res.status(404).json({ message: 'Member not found' });
+  }
+
+  cloudinary.uploader.upload(req.file.path, 
+    { folder: 'ss/members',
+    transformation: [{ width: 640, height: 640, crop: 'fill' }] // Set width and height to 640px
+    } ,async (err, result) => {
+    if (err) {
+      // Handle error
+      console.error(err);
+      return res.status(500).json({ message: 'Upload failed' });
+    }
+    // File uploaded successfully, send back Cloudinary response
+    if (member.profilePicPublicId) {
+      cloudinary.uploader.destroy(member.profilePicPublicId, async (error, result) => {
+      });
+
+    } 
+
+    member.profilePic = result.secure_url;
+    member.profilePicPublicId = result.public_id;
+    await member.save();
+    res.json(member);
+  
+  });
+};
+
+
 module.exports = {
   createMember,
   getMembers,
@@ -149,4 +183,5 @@ module.exports = {
   deleteMember,
   getMemberById,
   loginMember,
+  uploadImage
 };

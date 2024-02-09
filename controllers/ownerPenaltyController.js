@@ -1,4 +1,6 @@
+const Owner = require('../models/ownerModel');
 const OwnerPenalty = require('../models/ownerPenaltyModel');
+const sendEmail =  require("../utils/sendEmail");
 
 const defaultPageSize = 10
 
@@ -7,8 +9,26 @@ const createOwnerPenalty = async (req, res) => {
     try {
       const ownerPenalty = new OwnerPenalty(req.body);
       const savedOwnerPenalty = await ownerPenalty.save();
-      await savedOwnerPenalty.populate(["penaltyId","ownerId"])
+      
+
+      await savedOwnerPenalty.populate(["penaltyId","ownerId"]);
+      // console.log(savedOwnerPenalty);
+
       res.status(201).json(savedOwnerPenalty);
+
+      const owner  = await Owner.findById(savedOwnerPenalty.ownerId).populate(['flatId',"memberId"]);
+
+      // console.log(owner);
+      let recipientMail = owner?.memberId?.email;
+
+      let penaltyName = savedOwnerPenalty.penaltyId.name; 
+      let penaltyAmount = savedOwnerPenalty.penaltyId.amount;
+
+      if (recipientMail){
+        // console.log(recipientMail);
+        sendEmail(recipientMail, penaltyName + " " + penaltyAmount, "<h1>Panalty imposed by Society Sathi</h1>")
+      }
+
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

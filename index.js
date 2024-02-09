@@ -3,6 +3,21 @@ const cors = require('cors'); // Import the cors middleware
 
 var app = express();
 
+require('dotenv').config(); // Load environment variables from .env file
+
+
+const cloudinary = require('cloudinary').v2;
+
+
+
+
+cloudinary.config({
+    cloud_name: process.env.CLN_CLOUD_NAME,
+    api_key: process.env.CLN_API_KEY,
+    api_secret: process.env.CLN_API_SECRET,
+});
+
+
 // routes import 
 const builderRoutes = require('./routes/builderRoutes');
 const societyRoutes = require('./routes/societyRoutes');
@@ -15,7 +30,6 @@ const ownerFamilyRoutes = require('./routes/ownerFamilyRoutes');
 const tenantFamilyRoutes = require('./routes/tenantFamilyRoutes');
 const penaltyRoutes = require('./routes/penaltyRoutes');
 const ownerPenaltyRoutes = require('./routes/ownerPenaltyRoutes');
-
 
 
 const authenticateToken = require('./middleware/authMiddleware');
@@ -54,6 +68,8 @@ app.use(bodyParser.json());
 
 
 
+// image routes 
+
 
 
 
@@ -71,7 +87,6 @@ app.use('/api/penalties', penaltyRoutes);
 app.use('/api/ownerPenalties', ownerPenaltyRoutes);
 app.use('/api/complaints', complaintRoutes);
 app.use('/api/contacts', contactRoutes);
-
 
 // admin routes
 

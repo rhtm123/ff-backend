@@ -1,5 +1,4 @@
 const Society = require('../models/societyModel');
-const constants = require('../config/constants');
 
 const defaultPageSize = 10
 
