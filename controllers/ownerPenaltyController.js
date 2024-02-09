@@ -1,4 +1,5 @@
 const Owner = require('../models/ownerModel');
+const Society = require('../models/societyModel');
 const OwnerPenalty = require('../models/ownerPenaltyModel');
 const sendEmail =  require("../utils/sendEmail");
 
@@ -18,15 +19,58 @@ const createOwnerPenalty = async (req, res) => {
 
       const owner  = await Owner.findById(savedOwnerPenalty.ownerId).populate(['flatId',"memberId"]);
 
+      const society = await Society.findById(owner?.memberId?.societyId);
+
+
       // console.log(owner);
       let recipientMail = owner?.memberId?.email;
-
+      let recipientName = owner?.memberId?.name;
+      let societyName = society.name;
       let penaltyName = savedOwnerPenalty.penaltyId.name; 
       let penaltyAmount = savedOwnerPenalty.penaltyId.amount;
+      let penaltyDecription = savedOwnerPenalty?.details;
+      let penaltyImposed = savedOwnerPenalty.penaltyId.created;
+
+      let penaltyDate = new Date(penaltyImposed);
+
+      // Define options for formatting the date
+      const options = {
+        // weekday: "long", // full day of the week (e.g., "Monday")
+        year: "numeric", // 4-digit year (e.g., "2024")
+        month: "long", // full month name (e.g., "January")
+        day: "numeric", // day of the month (e.g., "1")
+        hour: "numeric", // hour (e.g., "1" for 1:00 AM/PM)
+        minute: "numeric", // minute (e.g., "30")
+        hour12: true, // 12-hour clock format (true for AM/PM)
+      };
+
+      // Format the penalty date according to the options
+      let formattedPenaltyDate = penaltyDate.toLocaleString("en-US", options);
 
       if (recipientMail){
         // console.log(recipientMail);
-        sendEmail(recipientMail, penaltyName + " " + penaltyAmount, "<h1>Panalty imposed by Society Sathi</h1>")
+        // const subject = `Penalty Name - ${penaltyName}, Penalty Amount - ${penaltyAmount}`;
+        const subject = `Notification - Penalty Imposed for ${penaltyName}`;
+        const htmlContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #333;">Penalty imposed by Society Sathi</h2>
+          <p>Dear ${recipientName},</p>
+          <p>We hope this message finds you well. We're writing to inform you that a penalty has been imposed due to ${penaltyName}. Details of the penalty are provided below:</p>
+          <ul>
+            <li><strong>Penalty Name:</strong> ${penaltyName}</li>
+            <li><strong>Penalty Amount:</strong> ${penaltyAmount}</li>
+            <li><strong>Date of Imposition:</strong> ${formattedPenaltyDate}</li>
+            <li><strong>Reason for penalty:</strong> ${penaltyDecription}</li>
+          </ul>
+          <p>Please ensure that the penalty amount is paid within the stipulated time frame to avoid any further action. If you have any questions or concerns regarding this penalty, please don't hesitate to contact us.</p>
+          <p>Thank you for your attention to this matter.</p>
+          <p><strong>Sincerely,</strong><br>
+          Secretary<br>
+          ${societyName}<br>
+          </p>
+        </div>
+      `;
+        sendEmail(recipientMail, subject , htmlContent)
       }
 
     } catch (error) {
