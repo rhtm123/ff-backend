@@ -29,7 +29,7 @@ const createOwnerPenalty = async (req, res) => {
       let penaltyName = savedOwnerPenalty.penaltyId.name; 
       let penaltyAmount = savedOwnerPenalty.penaltyId.amount;
       let penaltyDecription = savedOwnerPenalty?.details;
-      let penaltyImposed = savedOwnerPenalty.penaltyId.created;
+      let penaltyImposed = savedOwnerPenalty.created;
 
       let penaltyDate = new Date(penaltyImposed);
 
@@ -47,30 +47,52 @@ const createOwnerPenalty = async (req, res) => {
       // Format the penalty date according to the options
       let formattedPenaltyDate = penaltyDate.toLocaleString("en-US", options);
 
-      if (recipientMail){
+      if (recipientMail) {
         // console.log(recipientMail);
         // const subject = `Penalty Name - ${penaltyName}, Penalty Amount - ${penaltyAmount}`;
-        const subject = `Notification - Penalty Imposed for ${penaltyName}`;
-        const htmlContent = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #333;">Penalty imposed by Society Sathi</h2>
-          <p>Dear ${recipientName},</p>
-          <p>We hope this message finds you well. We're writing to inform you that a penalty has been imposed due to ${penaltyName}. Details of the penalty are provided below:</p>
-          <ul>
-            <li><strong>Penalty Name:</strong> ${penaltyName}</li>
-            <li><strong>Penalty Amount:</strong> ${penaltyAmount}</li>
-            <li><strong>Date of Imposition:</strong> ${formattedPenaltyDate}</li>
-            <li><strong>Reason for penalty:</strong> ${penaltyDecription}</li>
-          </ul>
-          <p>Please ensure that the penalty amount is paid within the stipulated time frame to avoid any further action. If you have any questions or concerns regarding this penalty, please don't hesitate to contact us.</p>
-          <p>Thank you for your attention to this matter.</p>
-          <p><strong>Sincerely,</strong><br>
-          Secretary<br>
-          ${societyName}<br>
-          </p>
-        </div>
-      `;
-        sendEmail(recipientMail, subject , htmlContent)
+        let htmlContent;
+        let subject;
+
+        if (penaltyAmount === 0) {
+          // Penalty amount is 0, display warning message
+          htmlContent = `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <p>Dear ${recipientName},</p>
+                <p>This is to inform you that a penalty has been recorded for the following reason: ${penaltyName}. However, the penalty amount is 0, and therefore no payment is required at this time.</p>
+                <p>Please be aware that although the penalty has been recorded, there is no financial obligation associated with it.</p>
+                <p>If you have any questions or concerns regarding this penalty, please feel free to contact us.</p>
+                <p>Thank you for your attention to this matter.</p>
+                <p><strong>Sincerely,</strong><br>
+                Secretary<br>
+                ${societyName}<br>
+                </p>
+              </div>
+            `;
+                subject = "Notification: " + penaltyName;
+
+                  } else {
+                    // Penalty amount is not 0, display penalty details
+                    htmlContent = `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <p>Dear ${recipientName},</p>
+                <p>We hope this message finds you well. We're writing to inform you that a penalty has been imposed due to ${penaltyName}. Details of the penalty are provided below:</p>
+                <ul>
+                  <li><strong>Penalty Name:</strong> ${penaltyName}</li>
+                  <li><strong>Penalty Amount:</strong> ${penaltyAmount}</li>
+                  <li><strong>Date of Imposition:</strong> ${formattedPenaltyDate}</li>
+                  <li><strong>Reason for penalty:</strong> ${penaltyDecription}</li>
+                </ul>
+                <p>Please ensure that the penalty amount is paid within the stipulated time frame to avoid any further action. If you have any questions or concerns regarding this penalty, please don't hesitate to contact us.</p>
+                <p>Thank you for your attention to this matter.</p>
+                <p><strong>Sincerely,</strong><br>
+                Secretary<br>
+                ${societyName}<br>
+                </p>
+              </div>
+            `;
+                    subject = "Notification: " + penaltyName;
+        }
+        sendEmail(recipientMail, subject, htmlContent);
       }
 
     } catch (error) {
