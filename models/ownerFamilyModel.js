@@ -5,6 +5,10 @@ const ownerFamilySchema = new mongoose.Schema({
   memberId: { type: mongoose.Schema.Types.ObjectId, ref: 'Member', required: true },
 
   relation: {type: String},
+  ownershipType: {
+    type: String,
+    enum: ['co-owner', "nominee", "null"],
+  },
   
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now },

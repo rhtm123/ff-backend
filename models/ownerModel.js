@@ -3,12 +3,14 @@ const OwnerFamily = require('./ownerFamilyModel');
 
 const ownerSchema = new mongoose.Schema({
   flatId: { type: mongoose.Schema.Types.ObjectId, ref: 'Flat', required: true },
-  memberId: { type: mongoose.Schema.Types.ObjectId, ref: 'Member', required: true },
+  // this is the main owner
+  memberId: { type: mongoose.Schema.Types.ObjectId, ref: 'Member', required: true }, 
   ownershipType: {
     type: String,
     enum: ['owner', 'co-owner'],
     default: 'owner'
   },
+
   possessionDate: { type: Date },
   isLiving: { type: Boolean },
   saleDate: { type: Date },

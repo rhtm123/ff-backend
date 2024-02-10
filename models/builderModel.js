@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const builderSchema = new mongoose.Schema({
   name: { type: String, required: true },
   website: { type: String },
-  ffrating: { type: Number },
-  contact: { type: String },
+  rating: { type: Number },
+  mobile: { type: String },
   email: { type: String },
   
   created: { type: Date, default: Date.now },
