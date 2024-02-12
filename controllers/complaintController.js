@@ -28,9 +28,10 @@ const getComplaints = async (req, res) => {
     const totalPages = Math.ceil(totalCount / pageSize);
 
     const complaints = await Complaint.find()
-      .populate(["ownerId"])
+      .sort({ created: -1 })
       .skip((page - 1) * pageSize)
-      .limit(pageSize);
+      .limit(pageSize)
+      .populate(["ownerId"]);
 
     res.json({
       complaints,
