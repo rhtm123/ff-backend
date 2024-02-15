@@ -3,6 +3,8 @@ const Owner = require('../models/ownerModel');
 const Member = require('../models/memberModel');
 
 const defaultPageSize = 10;
+const cloudinary = require('cloudinary').v2;
+
 
 /**
  * Create a new tenant.
@@ -135,10 +137,52 @@ const deleteTenant = async (req, res) => {
   }
 };
 
+const uploadFile = async (req, res) => {
+  // Upload the file to Cloudinary
+  const tenant = await Tenant.findById(req.params.id);
+
+  if (!tenant) {
+    return res.status(404).json({ message: 'Tenant not found' });
+  }
+
+  cloudinary.uploader.upload(req.file.path, 
+    { folder: 'ss/tenants',
+    } ,async (err, result) => {
+    if (err) {
+      // Handle error
+      console.error(err);
+      return res.status(500).json({ message: 'Upload failed' });
+    }
+    // File uploaded successfully, send back Cloudinary response
+    if (tenant.agreementFilePublicId) {
+      cloudinary.uploader.destroy(tenant.agreementFilePublicId, async (error, result) => {
+      });
+
+    } 
+    console.log(req.body)
+    if (req.body.fileType === 'agreement') {
+      tenant.agreementFile = result.secure_url;
+      tenant.agreementFilePublicId = result.public_id;
+    } else if (req.body.fileType === 'policeverification') {
+      tenant.policeVerificationFile = result.secure_url;
+      tenant.policeVerificationFilePublicId = result.public_id;
+    } else {
+      // Handle unexpected file type (should ideally never reach here)
+      console.error("Unknown file type:", req.body.fileType);
+      return res.status(500).json({ message: 'Unexpected error' }); // Or send a more specific error message
+    }
+  
+    await tenant.save();
+    res.json(tenant);
+  
+  });
+};
+
 module.exports = {
   createTenant,
   getTenants,
   updateTenant,
   deleteTenant,
   getTenantById,
+  uploadFile
 };
