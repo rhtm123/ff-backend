@@ -11,7 +11,9 @@ const tenantSchema = new mongoose.Schema({
   policeVerified: {type: Boolean, default: false},
 
   agreementFile: { type: String,},
+  agreementFilePublicId: { type: String,},
   policeVerificationFile: { type: String},
+  policeVerificationFilePublicId: { type: String},
 
   moveInDate: { type: Date },
   moveOutDate: { type: Date },
