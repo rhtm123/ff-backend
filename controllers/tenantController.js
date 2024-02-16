@@ -154,18 +154,28 @@ const uploadFile = async (req, res) => {
       return res.status(500).json({ message: 'Upload failed' });
     }
     // File uploaded successfully, send back Cloudinary response
-    if (tenant.agreementFilePublicId) {
-      cloudinary.uploader.destroy(tenant.agreementFilePublicId, async (error, result) => {
-      });
 
-    } 
-    console.log(req.body)
+
+    // console.log(req.body)
     if (req.body.fileType === 'agreement') {
+
       tenant.agreementFile = result.secure_url;
       tenant.agreementFilePublicId = result.public_id;
+
+      if (tenant.agreementFilePublicId) {
+        cloudinary.uploader.destroy(tenant.agreementFilePublicId, async (error, result) => {
+        });
+      } 
+
     } else if (req.body.fileType === 'policeverification') {
       tenant.policeVerificationFile = result.secure_url;
       tenant.policeVerificationFilePublicId = result.public_id;
+
+      if (tenant.policeVerificationFilePublicId) {
+        cloudinary.uploader.destroy(tenant.policeVerificationFilePublicId, async (error, result) => {
+        });
+      } 
+
     } else {
       // Handle unexpected file type (should ideally never reach here)
       console.error("Unknown file type:", req.body.fileType);
