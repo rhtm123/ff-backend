@@ -159,24 +159,27 @@ const uploadFile = async (req, res) => {
 
     // console.log(req.body)
     if (req.body.fileType === 'agreement') {
-
-      tenant.agreementFile = result.secure_url;
-      tenant.agreementFilePublicId = result.public_id;
-
       if (tenant.agreementFilePublicId) {
         cloudinary.uploader.destroy(tenant.agreementFilePublicId, async (error, result) => {
         });
       } 
 
-    } else if (req.body.fileType === 'policeVerification') {
-      tenant.policeVerificationFile = result.secure_url;
-      tenant.policeVerificationFilePublicId = result.public_id;
+      tenant.agreementFile = result.secure_url;
+      tenant.agreementFilePublicId = result.public_id;
+
       
 
+    } else if (req.body.fileType === 'policeVerification') {
       if (tenant.policeVerificationFilePublicId) {
         cloudinary.uploader.destroy(tenant.policeVerificationFilePublicId, async (error, result) => {
         });
       } 
+      
+      tenant.policeVerificationFile = result.secure_url;
+      tenant.policeVerificationFilePublicId = result.public_id;
+      
+
+      
 
     } else {
       // Handle unexpected file type (should ideally never reach here)
