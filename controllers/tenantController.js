@@ -168,9 +168,10 @@ const uploadFile = async (req, res) => {
         });
       } 
 
-    } else if (req.body.fileType === 'policeverification') {
+    } else if (req.body.fileType === 'policeVerification') {
       tenant.policeVerificationFile = result.secure_url;
       tenant.policeVerificationFilePublicId = result.public_id;
+      
 
       if (tenant.policeVerificationFilePublicId) {
         cloudinary.uploader.destroy(tenant.policeVerificationFilePublicId, async (error, result) => {
