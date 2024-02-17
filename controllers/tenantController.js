@@ -114,7 +114,7 @@ const getTenantById = async (req, res) => {
 const updateTenant = async (req, res) => {
   try {
     const tenant = await Tenant.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate(["flatId","memberId","ownerId"]);
-    await tenant.populate(['memberId', 'flatId']);
+    // await tenant.populate(['memberId', 'flatId']);
 
     res.json(tenant);
   } catch (error) {
@@ -140,6 +140,7 @@ const deleteTenant = async (req, res) => {
 const uploadFile = async (req, res) => {
   // Upload the file to Cloudinary
   const tenant = await Tenant.findById(req.params.id);
+  // console.log(req.body);
 
   if (!tenant) {
     return res.status(404).json({ message: 'Tenant not found' });
@@ -163,7 +164,7 @@ const uploadFile = async (req, res) => {
     if (req.body.fileType === 'agreement') {
       tenant.agreementFile = result.secure_url;
       tenant.agreementFilePublicId = result.public_id;
-    } else if (req.body.fileType === 'policeverification') {
+    } else if (req.body.fileType === 'policeVerification') {
       tenant.policeVerificationFile = result.secure_url;
       tenant.policeVerificationFilePublicId = result.public_id;
     } else {
@@ -173,6 +174,7 @@ const uploadFile = async (req, res) => {
     }
   
     await tenant.save();
+    await tenant.populate(["flatId","memberId","ownerId"])
     res.json(tenant);
   
   });
