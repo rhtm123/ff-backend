@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const memberSchema = new mongoose.Schema({
   name: { type: String, required: true, },
   username: { type: String, unique: true, maxlength: 255 },
-  email: { type: String, unique: true, lowercase: true, trim: true, match: /\S+@\S+\.\S+/ },
+  email: { type: String, lowercase: true, trim: true, match: /\S+@\S+\.\S+/ },
   password: { type: String },
   isOwner: { type: Boolean, default: false },
   isTenant: { type: Boolean, default: false },
