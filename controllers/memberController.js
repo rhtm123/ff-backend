@@ -14,6 +14,9 @@ const createMember = async (req, res) => {
     if (!member.username){ 
       member.username = member._id;
     }
+    if (!member.email){ 
+      member.email = member._id + "@gmail.com";
+    }
     const savedMember = await member.save();
     res.status(201).json(savedMember);
   } catch (error) {
